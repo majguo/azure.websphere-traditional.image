@@ -113,7 +113,12 @@ sudo mkdir /datadrive && sudo mount /dev/${disk}1 /datadrive",
                             "priority": 320,
                             "direction": "Inbound",
                             "destinationPortRanges": [
-                                "22"
+                                "22",
+                                "9060",
+                                "9080",
+                                "9043",
+                                "9443",
+                                "8880"
                             ]
                         }
                     }
@@ -191,7 +196,10 @@ sudo mkdir /datadrive && sudo mount /dev/${disk}1 /datadrive",
                 ],
                 "enableAcceleratedNetworking": false,
                 "enableIPForwarding": false,
-                "primary": true
+                "primary": true,
+                "dnsSettings": {
+                    "internalDnsNameLabel": "[variables('name_virtualMachine')]"
+                }
             }
         },
         {
@@ -284,5 +292,19 @@ sudo mkdir /datadrive && sudo mount /dev/${disk}1 /datadrive",
                 }
             }
         }
-    ]
+    ],
+    "outputs": {
+        "adminConsole": {
+            "type": "string",
+            "value": "[concat('http://', reference(variables('name_publicIPAddress')).dnsSettings.fqdn, ':9060/ibm/console')]"
+        },
+        "snoopServlet": {
+            "type": "string",
+            "value": "[concat('http://', reference(variables('name_publicIPAddress')).dnsSettings.fqdn, ':9080/snoop')]"
+        },
+        "soapConnectionTest": {
+            "type": "string",
+            "value": "[concat('http://', reference(variables('name_publicIPAddress')).dnsSettings.fqdn, ':8880/soap')]"
+        }
+    }
 }

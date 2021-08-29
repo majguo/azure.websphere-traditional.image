@@ -60,5 +60,20 @@ ${IM_INSTALL_DIRECTORY}/eclipse/tools/imcl install "$WAS_ND_TRADITIONAL" "$IBM_J
     -installationDirectory ${WAS_ND_INSTALL_DIRECTORY}/ -sharedResourcesDirectory ${IM_SHARED_DIRECTORY}/ \
     -secureStorageFile storage_file -acceptLicense -preferences $SSL_PREF,$DOWNLOAD_PREF -showProgress
 
+# Create standalone application profile
+${WAS_ND_INSTALL_DIRECTORY}/bin/manageprofiles.sh -create -profileName AppSrv1 -templatePath ${WAS_ND_INSTALL_DIRECTORY}/profileTemplates/default \
+    -hostName $(hostname) -nodeName $(hostname)Node01
+
+# Create and start server
+${WAS_ND_INSTALL_DIRECTORY}/profiles/AppSrv1/bin/startServer.sh server1
+
+# Open ports by adding iptables rules
+firewall-cmd --zone=public --add-port=9060/tcp --permanent
+firewall-cmd --zone=public --add-port=9080/tcp --permanent
+firewall-cmd --zone=public --add-port=9043/tcp --permanent
+firewall-cmd --zone=public --add-port=9443/tcp --permanent
+firewall-cmd --zone=public --add-port=8880/tcp --permanent
+firewall-cmd --reload
+
 # Remove temporary files
 rm -rf storage_file && rm -rf log_file
