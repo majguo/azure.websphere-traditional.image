@@ -36,9 +36,6 @@ done
 name=$(df -h | grep "/datadrive" | awk '{print $1;}' | grep -Po "(?<=\/dev\/).*")
 echo "UUID=$(blkid | grep -Po "(?<=\/dev\/${name}\: UUID=\")[^\"]*(?=\".*)")   /datadrive   xfs   defaults,nofail   1   2" >> /etc/fstab
 
-# Move entitlement check and application patch script to /var/lib/cloud/scripts/per-instance
-mv was-check.sh /var/lib/cloud/scripts/per-instance
-
 # Move installation properties file to /datadrive
 mv virtualimage.properties /datadrive
 
@@ -58,26 +55,6 @@ unzip -q "$IM_INSTALL_KIT" -d im_installer
 # Save credentials to a secure storage file
 ${IM_INSTALL_DIRECTORY}/eclipse/tools/imutilsc saveCredential -secureStorageFile storage_file \
     -userName "$userName" -userPassword "$password" -passportAdvantage
-
-# Check whether IBMid is entitled or not
-if [ $? -eq 0 ]; then
-    output=$(${IM_INSTALL_DIRECTORY}/eclipse/tools/imcl listAvailablePackages -cPA -secureStorageFile storage_file)
-    if echo "$output" | grep "$WAS_ND_VERSION_ENTITLED"; then
-        echo "IBM account entitlement check succeed."
-    elif echo "$output" | grep "$NO_PACKAGES_FOUND"; then
-        echo "IBM account entitlement check is not available."
-        rm -rf storage_file && rm -rf log_file
-        exit 1
-    else
-        echo "IBM account entitlement check failed."
-        rm -rf storage_file && rm -rf log_file
-        exit 1
-    fi
-else
-    echo "Cannot connect to Passport Advantage."
-    rm -rf storage_file && rm -rf log_file
-    exit 1
-fi
 
 # Install IBM HTTP Server V9 using IBM Installation Manager
 ${IM_INSTALL_DIRECTORY}/eclipse/tools/imcl install "$IBM_HTTP_SERVER" "$IBM_JAVA_SDK" -repositories "$REPOSITORY_URL" \
