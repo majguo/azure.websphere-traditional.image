@@ -159,7 +159,7 @@ jobs:
               --name trial${{ github.run_id }}${{ github.run_number }} \
               --template-file ./mainTemplate.json \
               --parameters vmName=trial${{ github.run_id }}${{ github.run_number }} vmAdminId=${{ env.vmAdminId }} vmAdminPwd=${{ env.vmAdminPassword }} location=${{ env.location }} imageResourceId=$imageResourceId
-      - name: Verify that the IBM installations
+      - name: Verify the IBM installations
         run: |
           echo "query public ip"
           trialVMIP=$(az vm show \

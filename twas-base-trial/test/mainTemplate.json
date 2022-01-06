@@ -10,14 +10,6 @@
             "defaultValue": "wsp",
             "type": "string"
         },
-        "ibmUserId": {
-            "defaultValue": "",
-            "type": "string"
-        },
-        "ibmUserPwd": {
-            "defaultValue": "",
-            "type": "securestring"
-        },
         "imageResourceId": {
             "defaultValue": "",
             "type": "string"
@@ -189,8 +181,7 @@
                 "osProfile": {
                     "computerName": "[variables('name_virtualMachine')]",
                     "adminUsername": "[parameters('vmAdminId')]",
-                    "adminPassword": "[parameters('vmAdminPwd')]",
-                    "customData": "[base64(concat(parameters('ibmUserId'), ' ', parameters('ibmUserPwd')))]"
+                    "adminPassword": "[parameters('vmAdminPwd')]"
                 },
                 "networkProfile": {
                     "networkInterfaces": [
