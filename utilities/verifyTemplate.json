@@ -29,7 +29,19 @@
             "defaultValue": "",
             "type": "securestring"
         },
-        "imageResourceId": {
+        "imagePublisher": {
+            "defaultValue": "",
+            "type": "string"
+        },
+        "imageOffer": {
+            "defaultValue": "",
+            "type": "string"
+        },
+        "imageSku": {
+            "defaultValue": "",
+            "type": "string"
+        },
+        "imageVersion": {
             "defaultValue": "",
             "type": "string"
         },
@@ -190,7 +202,10 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "[parameters('imageResourceId')]"
+                        "publisher": "[parameters('imagePublisher')]",
+                        "offer": "[parameters('imageOffer')]",
+                        "sku": "[parameters('imageSku')]",
+                        "version": "[parameters('imageVersion')]"
                     }
                 },
                 "osProfile": {
@@ -206,6 +221,11 @@
                         }
                     ]
                 }
+            },
+            "plan": {
+                "name": "[parameters('imageSku')]",
+                "publisher": "[parameters('imagePublisher')]",
+                "product": "[parameters('imageOffer')]"
             }
         },
         {
