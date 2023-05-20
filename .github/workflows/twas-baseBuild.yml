@@ -41,8 +41,8 @@ env:
   utilitiesLocation: https://raw.githubusercontent.com/${{ secrets.USER_NAME }}/azure.websphere-traditional.image/$GITHUB_REF_NAME/utilities/
   accessToken: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
   twasSingleRepo: ${{ secrets.USER_NAME }}/azure.websphere-traditional.singleserver
-  offerId: "2023-03-27-twas-single-server-base-image"
-  planId: "2023-03-27-twas-single-server-base-image"
+  offerId: "2021-zheng-image-offer"
+  planId: "2021-zheng-rhel-with-was-base"
   offerType: "vm_image_offer"
   clientId: ${{ secrets.CLIENT_ID }}
   secretValue: ${{ secrets.SECRET_VALUE }}
