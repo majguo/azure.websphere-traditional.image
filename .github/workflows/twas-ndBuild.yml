@@ -303,6 +303,7 @@ jobs:
           name: sasurl-twasnd
           path: sas-url-twasnd.txt
       - name: Update offer sas url and version
+        if: false
         uses: microsoft/microsoft-partner-center-github-action@v3.1
         with:
           offerId: ${{ env.offerId }}
