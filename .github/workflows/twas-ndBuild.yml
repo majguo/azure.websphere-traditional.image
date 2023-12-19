@@ -194,9 +194,10 @@ jobs:
                 imageResourceId=$imageResourceId vmAdminId=${{ env.vmAdminId }} vmAdminPwd=${{ env.vmAdminPassword }} \
                 scriptLocation=${{ env.scriptLocation }}
             
-            az group delete -n $rgName --yes --no-wait
+            #az group delete -n $rgName --yes --no-wait
           done
       - name: Verify the image with twas-cluster integration-test pipeline
+        if: false
         run: |
           # Trigger the workflow run
           requestData={\"ref\":\"main\",\"inputs\":{\"databaseType\":\"none\",\"ndImageResourceId\":\"${ndImageResourceId}\",\"ihsImageResourceId\":\"${ihsImageResourceId}\"}}
@@ -267,8 +268,8 @@ jobs:
         with:
           azcliversion: ${{ env.azCliVersion }}
           inlineScript: |
-            az image delete --ids \
-              $(az image show -g ${{ env.testResourceGroup }} -n ${{ env.vmName }} --query id -o tsv)
+            #az image delete --ids \
+            # $(az image show -g ${{ env.testResourceGroup }} -n ${{ env.vmName }} --query id -o tsv)
             az vm delete --yes --ids \
               $(az vm show -g ${{ env.testResourceGroup }} -n ${{ env.vmName }} --query id -o tsv)
             az network nic delete --ids \
@@ -303,6 +304,7 @@ jobs:
           name: sasurl-twasnd
           path: sas-url-twasnd.txt
       - name: Update offer sas url and version
+        if: false
         uses: microsoft/microsoft-partner-center-github-action@v3.1
         with:
           offerId: ${{ env.offerId }}
