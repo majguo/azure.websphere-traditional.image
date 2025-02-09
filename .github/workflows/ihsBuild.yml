@@ -20,6 +20,11 @@ on:
         required: true
         type: boolean
         default: false
+      location:
+        description: 'Location of the Azure resources'
+        required: true
+        type: string
+        default: 'eastus'
   # Allows you to run this workflow using GitHub APIs
   # PERSONAL_ACCESS_TOKEN=<GITHUB_PERSONAL_ACCESS_TOKEN>
   # REPO_NAME=WASdev/azure.websphere-traditional.image
@@ -46,7 +51,7 @@ env:
   testResourceGroup: imageTest-${{ github.repository_owner }}-${{ github.run_id }}-${{ github.run_number }}-ihs
   vmName: vm-${{ github.run_id }}-${{ github.run_number }}
   vhdStorageAccountName: storage${{ github.run_id }}${{ github.run_number }}
-  location: eastus
+  location: ${{ github.event.inputs.location || 'eastus' }}
   scriptLocation: https://raw.githubusercontent.com/${{ secrets.USER_NAME }}/azure.websphere-traditional.image/$GITHUB_REF_NAME/ihs/test/
   utilitiesLocation: https://raw.githubusercontent.com/${{ secrets.USER_NAME }}/azure.websphere-traditional.image/$GITHUB_REF_NAME/utilities/
   accessToken: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -225,7 +230,7 @@ jobs:
         if: ${{ !inputs.skipIntegrationTests }}
         run: |
           # Trigger the workflow run
-          requestData={\"ref\":\"${GITHUB_REF_NAME}\",\"inputs\":{\"databaseType\":\"none\",\"ndImageResourceId\":\"${ndImageResourceId}\",\"ihsImageResourceId\":\"${ihsImageResourceId}\"}}
+          requestData={\"ref\":\"${GITHUB_REF_NAME}\",\"inputs\":{\"databaseType\":\"none\",\"ndImageResourceId\":\"${ndImageResourceId}\",\"ihsImageResourceId\":\"${ihsImageResourceId}\",\"location\":\"${{ env.location }}\"}}
           curl --fail --verbose -L -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${accessToken}"\
